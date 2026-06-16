@@ -86,7 +86,7 @@ export function SubscriptionPlan({
         </p>
         <div className="mt-4 flex items-baseline gap-1">
           <span className="text-primary-foreground text-4xl font-bold">
-            R$59
+            Kz 59
           </span>
           <span className="text-primary-foreground/70">/mês</span>
         </div>

@@ -249,7 +249,7 @@ const AddAppointmentForm = ({
                   fixedDecimalScale
                   decimalSeparator=","
                   thousandSeparator="."
-                  prefix="R$ "
+                  prefix="Kz "
                   allowNegative={false}
                   disabled={!selectedDoctorId}
                   customInput={Input}

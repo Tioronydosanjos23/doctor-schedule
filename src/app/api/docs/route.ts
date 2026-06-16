@@ -153,7 +153,7 @@ const spec = {
           appointmentPriceInCents: {
             type: "integer",
             example: 25000,
-            description: "Preço da consulta em centavos (ex: 25000 = R$250,00)",
+            description: "Preço da consulta em centavos (ex: 25000 = Kz 250,00)",
           },
           availableFromWeekDay: {
             type: "integer",

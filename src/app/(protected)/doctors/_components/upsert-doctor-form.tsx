@@ -209,7 +209,7 @@ const UpsertDoctorForm = ({
                   allowLeadingZeros={false}
                   thousandSeparator="."
                   customInput={Input}
-                  prefix="R$ "
+                  prefix="Kz "
                   onFocus={() => {
                     if (!field.value || field.value === 0) {
                       field.onChange("");

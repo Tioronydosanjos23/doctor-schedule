@@ -25,7 +25,7 @@ const StatsCards = ({
   const stats = [
     {
       title: "Faturamento",
-      value: totalRevenue ? formatCurrencyInCents(totalRevenue) : "R$ 0,00",
+      value: totalRevenue ? formatCurrencyInCents(totalRevenue) : "Kz 0,00",
       icon: DollarSignIcon,
       trend: totalRevenue && totalRevenue > 0 ? "+12%" : null,
       trendUp: true,
