@@ -30,7 +30,7 @@ export default function TopDoctors({ doctors }: TopDoctorsProps) {
             <div key={doctor.id} className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <Avatar className="h-10 w-10">
-                  <AvatarFallback className="bg-gray-100 text-lg font-medium text-gray-600">
+                  <AvatarFallback className="bg-primary/10 text-primary text-sm font-medium">
                     {doctor.name
                       .split(" ")
                       .map((n) => n[0])

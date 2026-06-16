@@ -66,31 +66,35 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
   const availability = getAvailability(doctor);
 
   return (
-    <Card>
+    <Card className="transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <Avatar className="h-10 w-10">
-            <AvatarFallback>{doctorInitials}</AvatarFallback>
+        <div className="flex items-center gap-3">
+          <Avatar className="h-12 w-12 ring-2 ring-primary/10">
+            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+              {doctorInitials}
+            </AvatarFallback>
           </Avatar>
-          <div>
-            <h3 className="text-sm font-medium">{doctor.name}</h3>
-            <p className="text-muted-foreground text-sm">{doctor.specialty}</p>
+          <div className="min-w-0 flex-1">
+            <h3 className="truncate text-sm font-semibold">{doctor.name}</h3>
+            <p className="text-muted-foreground truncate text-xs">
+              {doctor.specialty}
+            </p>
           </div>
         </div>
       </CardHeader>
       <Separator />
       <CardContent className="flex flex-col gap-2">
-        <Badge variant="outline">
-          <CalendarIcon className="mr-1" />
+        <Badge variant="outline" className="w-fit text-xs">
+          <CalendarIcon className="mr-1 h-3 w-3" />
           {availability.from.format("dddd")} a {availability.to.format("dddd")}
         </Badge>
-        <Badge variant="outline">
-          <ClockIcon className="mr-1" />
+        <Badge variant="outline" className="w-fit text-xs">
+          <ClockIcon className="mr-1 h-3 w-3" />
           {availability.from.format("HH:mm")} as{" "}
           {availability.to.format("HH:mm")}
         </Badge>
-        <Badge variant="outline">
-          <DollarSignIcon className="mr-1" />
+        <Badge variant="outline" className="w-fit text-xs">
+          <DollarSignIcon className="mr-1 h-3 w-3" />
           {formatCurrencyInCents(doctor.appointmentPriceInCents)}
         </Badge>
       </CardContent>
@@ -101,7 +105,9 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
           onOpenChange={setIsUpsertDoctorDialogOpen}
         >
           <DialogTrigger asChild>
-            <Button className="w-full">Ver detalhes</Button>
+            <Button className="w-full" size="sm" aria-label={`Ver detalhes de ${doctor.name}`}>
+              Ver detalhes
+            </Button>
           </DialogTrigger>
           <UpsertDoctorForm
             doctor={{
@@ -115,8 +121,8 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
         </Dialog>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="outline" className="w-full">
-              <TrashIcon />
+            <Button variant="outline" className="w-full" size="sm" aria-label={`Deletar médico ${doctor.name}`}>
+              <TrashIcon className="h-4 w-4" aria-hidden="true" />
               Deletar médico
             </Button>
           </AlertDialogTrigger>

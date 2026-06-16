@@ -38,21 +38,25 @@ const items = [
     title: "Dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,
+    ariaLabel: "Ir para o painel de controlo",
   },
   {
     title: "Agendamentos",
     url: "/appointments",
     icon: CalendarDays,
+    ariaLabel: "Gerir agendamentos",
   },
   {
     title: "Médicos",
     url: "/doctors",
     icon: Stethoscope,
+    ariaLabel: "Gerir médicos",
   },
   {
     title: "Pacientes",
     url: "/patients",
     icon: UsersRound,
+    ariaLabel: "Gerir pacientes",
   },
 ];
 
@@ -98,8 +102,8 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={pathname === item.url}>
-                    <Link href={item.url}>
-                      <item.icon />
+                    <Link href={item.url} aria-label={item.ariaLabel}>
+                      <item.icon aria-hidden="true" />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -117,8 +121,8 @@ export function AppSidebar() {
                   asChild
                   isActive={pathname === "/subscription"}
                 >
-                  <Link href="/subscription">
-                    <Gem />
+                  <Link href="/subscription" aria-label="Gerir assinatura">
+                    <Gem aria-hidden="true" />
                     <span>Assinaturas</span>
                   </Link>
                 </SidebarMenuButton>
@@ -134,7 +138,14 @@ export function AppSidebar() {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton size="lg">
                   <Avatar>
-                    <AvatarFallback>F</AvatarFallback>
+                    <AvatarFallback>
+                      {session.data?.user?.name
+                        ?.split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .slice(0, 2)
+                        .toUpperCase() || "?"}
+                    </AvatarFallback>
                   </Avatar>
                   <div>
                     <p className="text-sm">
@@ -147,8 +158,8 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={handleSignOut}>
-                  <LogOut />
+                <DropdownMenuItem onClick={handleSignOut} aria-label="Sair da conta">
+                  <LogOut aria-hidden="true" />
                   Sair
                 </DropdownMenuItem>
               </DropdownMenuContent>

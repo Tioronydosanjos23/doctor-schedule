@@ -9,11 +9,11 @@ const Hero = async () => {
   const session = await getSession();
 
   return (
-    <section className="relative px-6 pt-40 pb-24">
+    <section className="relative px-4 pt-32 pb-16 sm:px-6 sm:pt-40 sm:pb-24">
       <div className="container mx-auto max-w-6xl">
         {/* Badge */}
-        <div className="mb-8 flex justify-center lg:justify-start">
-          <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white/60 px-3.5 py-1.5 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all duration-300 hover:-translate-y-px hover:cursor-pointer hover:bg-white hover:shadow-md dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">
+        <div className="mb-6 flex justify-center sm:mb-8 lg:justify-start">
+          <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white/60 px-3 py-1.5 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all duration-300 hover:-translate-y-px hover:cursor-pointer hover:bg-white hover:shadow-md dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">
             <Trophy className="h-3.5 w-3.5 text-black dark:text-white" />
             <span className="text-xs font-semibold text-black dark:text-white">
               Plataforma #1 em Agendamento Médico
@@ -21,11 +21,11 @@ const Hero = async () => {
           </div>
         </div>
 
-        <div className="grid items-center gap-16 lg:grid-cols-2">
+        <div className="grid items-center gap-8 sm:gap-16 lg:grid-cols-2">
           {/* Left – copy */}
-          <div className="space-y-8">
-            <div className="space-y-5">
-              <h1 className="text-5xl leading-[1.08] font-bold tracking-tight md:text-6xl lg:text-[4.25rem]">
+          <div className="space-y-6 sm:space-y-8">
+            <div className="space-y-4 sm:space-y-5">
+              <h1 className="text-4xl leading-[1.1] font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-[4.25rem]">
                 <span className="block bg-gradient-to-br from-blue-500 via-violet-500 to-purple-600 bg-clip-text text-transparent">
                   Revolucione
                 </span>
@@ -36,7 +36,7 @@ const Hero = async () => {
                   médicos
                 </span>
               </h1>
-              <p className="max-w-lg text-lg leading-relaxed text-slate-500 dark:text-slate-400">
+              <p className="max-w-lg text-base leading-relaxed text-slate-500 dark:text-slate-400 sm:text-lg">
                 Simplifique a gestão de consultas com nossa plataforma
                 intuitiva. Mais tempo para cuidar dos pacientes, menos tempo com
                 papelada.
@@ -45,21 +45,21 @@ const Hero = async () => {
 
             {/* CTAs */}
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Link href="/authentication">
-                <button className="group flex items-center gap-2.5 rounded-xl bg-black px-7 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-px hover:cursor-pointer dark:bg-white dark:text-black">
+              <Link href="/authentication" className="w-full sm:w-auto">
+                <button className="group flex w-full items-center justify-center gap-2.5 rounded-xl bg-black px-7 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-px hover:cursor-pointer dark:bg-white dark:text-black">
                   <span>{session ? "Ir ao Dashboard" : "Começar Grátis"}</span>
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </button>
               </Link>
-              <Link href="/authentication?demo=true">
-                <button className="rounded-xl border border-slate-200 bg-white/60 px-7 py-3.5 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all duration-300 hover:-translate-y-px hover:cursor-pointer hover:bg-white hover:shadow-md dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">
+              <Link href="/authentication?demo=true" className="w-full sm:w-auto">
+                <button className="w-full rounded-xl border border-slate-200 bg-white/60 px-7 py-3.5 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all duration-300 hover:-translate-y-px hover:cursor-pointer hover:bg-white hover:shadow-md dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">
                   Ver Demonstração
                 </button>
               </Link>
             </div>
 
             {/* Trust badges */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5">
+            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-2.5">
               {[
                 "Grátis por 30 dias",
                 "Controle de Agendamentos",
@@ -76,7 +76,7 @@ const Hero = async () => {
           </div>
 
           {/* Right – glass appointments card */}
-          <div className="relative">
+          <div className="relative hidden lg:block">
             <NextAppointmentsCard />
           </div>
         </div>

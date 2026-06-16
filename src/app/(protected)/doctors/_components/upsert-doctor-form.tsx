@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { upsertDoctor } from "@/actions/upsert-doctor";
-import { Button } from "@/components/ui/button";
 import {
   DialogContent,
   DialogDescription,
@@ -23,6 +22,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { FormSubmitButton } from "@/components/ui/form-submit-button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -417,15 +417,13 @@ const UpsertDoctorForm = ({
             )}
           />
           <DialogFooter>
-            <Button type="submit" disabled={upsertDoctorAction.isPending}>
-              {upsertDoctorAction.isPending
-                ? doctor
-                  ? "Salvando..."
-                  : "Adicionando..."
-                : doctor
-                  ? "Salvar alterações"
-                  : "Adicionar médico"}
-            </Button>
+            <FormSubmitButton
+              type="submit"
+              isLoading={upsertDoctorAction.isPending}
+              loadingText={doctor ? "Salvando..." : "Adicionando..."}
+            >
+              {doctor ? "Salvar alterações" : "Adicionar médico"}
+            </FormSubmitButton>
           </DialogFooter>
         </form>
       </Form>

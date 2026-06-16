@@ -41,7 +41,12 @@ const PatientsPage = async () => {
           </PageActions>
         </PageHeader>
         <PageContent>
-          <DataTable data={patients} columns={patientsTableColumns} />
+          <DataTable
+            data={patients}
+            columns={patientsTableColumns}
+            searchKey="name"
+            searchPlaceholder="Pesquisar por nome..."
+          />
         </PageContent>
       </PageContainer>
     </WithAuthentication>

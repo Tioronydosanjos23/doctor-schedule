@@ -1,5 +1,7 @@
 import { eq } from "drizzle-orm";
+import { Stethoscope } from "lucide-react";
 
+import { EmptyState } from "@/components/empty-state";
 import { ExportButton } from "@/components/export-button";
 import {
   PageActions,
@@ -41,13 +43,13 @@ const DoctorsPage = async () => {
         </PageHeader>
         <PageContent>
           {doctors.length === 0 ? (
-            <div className="rounded-md border">
-              <div className="text-muted-foreground flex h-24 items-center justify-center text-center text-sm">
-                Nenhum resultado encontrado.
-              </div>
-            </div>
+            <EmptyState
+              icon={Stethoscope}
+              title="Nenhum médico cadastrado"
+              description="Adicione médicos para começar a agendar consultas."
+            />
           ) : (
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {doctors.map((doctor) => (
                 <DoctorCard key={doctor.id} doctor={doctor} />
               ))}

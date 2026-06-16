@@ -32,6 +32,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { FormSubmitButton } from "@/components/ui/form-submit-button";
 import { Input } from "@/components/ui/input";
 import {
   Popover,
@@ -358,11 +359,14 @@ const AddAppointmentForm = ({
           />
 
           <DialogFooter>
-            <Button type="submit" disabled={createAppointmentAction.isPending}>
-              {createAppointmentAction.isPending
-                ? "Criando..."
-                : "Criar agendamento"}
-            </Button>
+            <FormSubmitButton
+              type="submit"
+              isLoading={createAppointmentAction.isPending}
+              loadingText="Criando..."
+              className="w-full"
+            >
+              Criar agendamento
+            </FormSubmitButton>
           </DialogFooter>
         </form>
       </Form>

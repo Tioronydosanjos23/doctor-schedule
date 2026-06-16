@@ -18,6 +18,12 @@ export default async function Layout({
       <DemoUserHandler />
       <AppSidebar />
       <main className="w-full">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-2 focus:bg-primary focus:text-primary-foreground"
+        >
+          Saltar para o conteúdo principal
+        </a>
         <SidebarTrigger />
         {session?.user && (
           <>
@@ -33,7 +39,7 @@ export default async function Layout({
             />
           </>
         )}
-        {children}
+        <div id="main-content">{children}</div>
       </main>
     </SidebarProvider>
   );

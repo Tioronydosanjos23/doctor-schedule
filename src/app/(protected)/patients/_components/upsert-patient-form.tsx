@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { upsertPatient } from "@/actions/upsert-patient";
-import { Button } from "@/components/ui/button";
 import {
   DialogContent,
   DialogDescription,
@@ -26,6 +25,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { FormSubmitButton } from "@/components/ui/form-submit-button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -198,13 +198,14 @@ const UpsertPatientForm = ({
             )}
           />
           <DialogFooter>
-            <Button
+            <FormSubmitButton
               type="submit"
-              disabled={upsertPatientAction.isPending}
+              isLoading={upsertPatientAction.isPending}
+              loadingText="Salvando..."
               className="w-full"
             >
-              {upsertPatientAction.isPending ? "Salvando..." : "Salvar"}
-            </Button>
+              Salvar
+            </FormSubmitButton>
           </DialogFooter>
         </form>
       </Form>

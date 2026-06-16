@@ -1,7 +1,6 @@
 import { eq } from "drizzle-orm";
 
 import { ExportButton } from "@/components/export-button";
-import { DataTable } from "@/components/ui/data-table";
 import {
   PageActions,
   PageContainer,
@@ -17,7 +16,7 @@ import WithAuthentication from "@/hocs/with-authentication";
 import { getSession } from "@/lib/get-session";
 
 import AddAppointmentButton from "./_components/add-appointment-button";
-import { appointmentsTableColumns } from "./_components/table-columns";
+import AppointmentsViewToggle from "./_components/appointments-view-toggle";
 
 const AppointmentsPage = async () => {
   const session = await getSession();
@@ -54,7 +53,7 @@ const AppointmentsPage = async () => {
           </PageActions>
         </PageHeader>
         <PageContent>
-          <DataTable data={appointments} columns={appointmentsTableColumns} />
+          <AppointmentsViewToggle appointments={appointments} />
         </PageContent>
       </PageContainer>
     </WithAuthentication>
