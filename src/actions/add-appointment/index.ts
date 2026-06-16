@@ -55,15 +55,19 @@ export const addAppointment = protectedWithClinicActionClient
     });
 
     if (patient && doctor) {
-      await notifyPatient({
-        patientName: patient.name,
-        patientEmail: patient.email,
-        patientPhone: patient.phoneNumber,
-        doctorName: doctor.name,
-        doctorSpecialty: doctor.specialty,
-        appointmentDate: appointmentDateTime,
-        clinicName: ctx.user.clinic.name,
-      });
+      try {
+        await notifyPatient({
+          patientName: patient.name,
+          patientEmail: patient.email,
+          patientPhone: patient.phoneNumber,
+          doctorName: doctor.name,
+          doctorSpecialty: doctor.specialty,
+          appointmentDate: appointmentDateTime,
+          clinicName: ctx.user.clinic.name,
+        });
+      } catch (notifyError) {
+        console.error("Erro ao notificar paciente:", notifyError);
+      }
     }
 
     revalidatePath("/appointments");

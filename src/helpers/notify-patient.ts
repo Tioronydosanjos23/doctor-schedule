@@ -50,9 +50,14 @@ export async function notifyPatient(params: NotifyPatientParams) {
 
   if (patientEmail) {
     try {
+      const resendDomain = process.env.RESEND_DOMAIN || "resend.dev";
+      const fromEmail = resendDomain === "resend.dev"
+        ? "onboarding@resend.dev"
+        : `noreply@${resendDomain}`;
+
       const resend = new Resend(process.env.RESEND_API_KEY);
       await resend.emails.send({
-        from: `${clinicName} <noreply@${process.env.RESEND_DOMAIN || "doctor-schedule.com"}>`,
+        from: `${clinicName} <${fromEmail}>`,
         to: patientEmail,
         subject: `Consulta agendada - ${formattedDate}`,
         text: message,
