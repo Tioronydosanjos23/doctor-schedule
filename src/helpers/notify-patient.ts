@@ -49,23 +49,32 @@ export async function notifyPatient(params: NotifyPatientParams) {
     `Equipe ${clinicName}`;
 
   if (patientEmail) {
-    try {
-      const resendDomain = process.env.RESEND_DOMAIN || "resend.dev";
-      const fromEmail = resendDomain === "resend.dev"
-        ? "onboarding@resend.dev"
-        : `noreply@${resendDomain}`;
+    if (!process.env.RESEND_API_KEY) {
+      console.error("RESEND_API_KEY não configurada");
+    } else {
+      try {
+        const resendDomain = process.env.RESEND_DOMAIN || "resend.dev";
+        const fromEmail = resendDomain === "resend.dev"
+          ? "onboarding@resend.dev"
+          : `noreply@${resendDomain}`;
 
-      const resend = new Resend(process.env.RESEND_API_KEY);
-      await resend.emails.send({
-        from: `${clinicName} <${fromEmail}>`,
-        to: patientEmail,
-        subject: `Consulta agendada - ${formattedDate}`,
-        text: message,
-      });
-      console.log(`Email enviado para ${patientEmail}`);
-      return { method: "email" as const };
-    } catch (error) {
-      console.error("Erro ao enviar email:", error);
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        const { error } = await resend.emails.send({
+          from: `${clinicName} <${fromEmail}>`,
+          to: patientEmail,
+          subject: `Consulta agendada - ${formattedDate}`,
+          text: message,
+        });
+
+        if (error) {
+          console.error("Erro Resend:", JSON.stringify(error));
+        } else {
+          console.log(`Email enviado com sucesso para ${patientEmail}`);
+          return { method: "email" as const };
+        }
+      } catch (error) {
+        console.error("Erro ao enviar email:", JSON.stringify(error));
+      }
     }
   }
 
