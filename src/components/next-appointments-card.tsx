@@ -78,7 +78,7 @@ const NextAppointmentsCard = async () => {
               name={appointment.patient?.name ?? ""}
               doctor={appointment.doctor?.name ?? ""}
               date={dayjs(appointment.date)
-                .tz("America/Sao_Paulo")
+                .tz("Africa/Luanda")
                 .format("DD/MM [às] HH:mm")}
             />
           ))}

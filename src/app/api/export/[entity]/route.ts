@@ -153,7 +153,7 @@ async function buildAppointmentsExcel(clinicId: string): Promise<Buffer> {
     ws.addRow({
       patient: a.patient.name,
       doctor: a.doctor.name,
-      date: dayjs(a.date).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:mm"),
+      date: dayjs(a.date).tz("Africa/Luanda").format("DD/MM/YYYY HH:mm"),
       specialty: a.doctor.specialty,
       price: formatCurrencyInCents(a.appointmentPriceInCents),
     });
@@ -199,7 +199,7 @@ function buildPDF(
       .font("Helvetica")
       .fillColor("#64748B")
       .text(
-        `Gerado em ${dayjs().tz("America/Sao_Paulo").format("DD/MM/YYYY [às] HH:mm")}`,
+        `Gerado em ${dayjs().tz("Africa/Luanda").format("DD/MM/YYYY [às] HH:mm")}`,
         40,
         65,
       );
@@ -334,7 +334,7 @@ async function buildAppointmentsPDF(clinicId: string): Promise<Buffer> {
   const rows = appointments.map((a) => [
     a.patient.name,
     a.doctor.name,
-    dayjs(a.date).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:mm"),
+    dayjs(a.date).tz("Africa/Luanda").format("DD/MM/YYYY HH:mm"),
     a.doctor.specialty,
     formatCurrencyInCents(a.appointmentPriceInCents),
   ]);
@@ -377,7 +377,7 @@ export async function GET(
   }
 
   const clinicId = session.user.clinic.id;
-  const timestamp = dayjs().tz("America/Sao_Paulo").format("YYYY-MM-DD");
+  const timestamp = dayjs().tz("Africa/Luanda").format("YYYY-MM-DD");
 
   try {
     if (format === "excel") {

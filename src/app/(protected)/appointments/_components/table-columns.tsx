@@ -49,7 +49,7 @@ export const appointmentsTableColumns: ColumnDef<AppointmentWithRelations>[] = [
     cell: (params) => {
       const appointment = params.row.original;
       return dayjs(appointment.date)
-        .tz("America/Sao_Paulo")
+        .tz("Africa/Luanda")
         .format("DD/MM/YYYY [às] HH:mm");
     },
   },

@@ -6,7 +6,8 @@ import utc from "dayjs/plugin/utc";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/db";
-import { appointmentsTable } from "@/db/schema";
+import { appointmentsTable, doctorsTable, patientsTable } from "@/db/schema";
+import { notifyPatient } from "@/helpers/notify-patient";
 import { protectedWithClinicActionClient } from "@/lib/next-safe-action";
 
 import { getAvailableTimes } from "../get-available-times";
@@ -32,7 +33,7 @@ export const addAppointment = protectedWithClinicActionClient
       throw new Error("Time not available");
     }
     const appointmentDateTime = dayjs(parsedInput.date)
-      .tz("America/Sao_Paulo")
+      .tz("Africa/Luanda")
       .set("hour", parseInt(parsedInput.time.split(":")[0]))
       .set("minute", parseInt(parsedInput.time.split(":")[1]))
       .set("second", 0)
@@ -44,6 +45,26 @@ export const addAppointment = protectedWithClinicActionClient
       clinicId: ctx.user.clinic.id,
       date: appointmentDateTime,
     });
+
+    const patient = await db.query.patientsTable.findFirst({
+      where: (patients, { eq }) => eq(patients.id, parsedInput.patientId),
+    });
+
+    const doctor = await db.query.doctorsTable.findFirst({
+      where: (doctors, { eq }) => eq(doctors.id, parsedInput.doctorId),
+    });
+
+    if (patient && doctor) {
+      await notifyPatient({
+        patientName: patient.name,
+        patientEmail: patient.email,
+        patientPhone: patient.phoneNumber,
+        doctorName: doctor.name,
+        doctorSpecialty: doctor.specialty,
+        appointmentDate: appointmentDateTime,
+        clinicName: ctx.user.clinic.name,
+      });
+    }
 
     revalidatePath("/appointments");
     revalidatePath("/dashboard");

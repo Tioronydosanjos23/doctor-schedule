@@ -112,11 +112,11 @@ export const getDashboard = async ({ from, to, session }: Params) => {
         eq(appointmentsTable.clinicId, session.user.clinic.id),
         gte(
           appointmentsTable.date,
-          dayjs().tz("America/Sao_Paulo").startOf("day").toDate(),
+          dayjs().tz("Africa/Luanda").startOf("day").toDate(),
         ),
         lte(
           appointmentsTable.date,
-          dayjs().tz("America/Sao_Paulo").endOf("day").toDate(),
+          dayjs().tz("Africa/Luanda").endOf("day").toDate(),
         ),
       ),
       with: {

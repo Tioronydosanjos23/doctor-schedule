@@ -43,7 +43,7 @@ export const getAvailableTimes = protectedWithClinicActionClient
         return dayjs(appointment.date).isSame(parsedInput.date, "day");
       })
       .map((appointment) =>
-        dayjs(appointment.date).tz("America/Sao_Paulo").format("HH:mm:ss"),
+        dayjs(appointment.date).tz("Africa/Luanda").format("HH:mm:ss"),
       );
     const timeSlots = generateTimeSlots();
 
@@ -68,15 +68,15 @@ export const getAvailableTimes = protectedWithClinicActionClient
       );
     });
 
-    const today = dayjs().tz("America/Sao_Paulo").format("YYYY-MM-DD");
-    const now = dayjs().tz("America/Sao_Paulo");
+    const today = dayjs().tz("Africa/Luanda").format("YYYY-MM-DD");
+    const now = dayjs().tz("Africa/Luanda");
 
     return doctorTimeSlots.map((time) => {
       let isAvailable = !appointmentsOnSelectedDate.includes(time);
       // Se for hoje e o horário já passou, marca como indisponível
       if (parsedInput.date === today) {
         const slotDateTime = dayjs()
-          .tz("America/Sao_Paulo")
+          .tz("Africa/Luanda")
           .set("hour", Number(time.split(":")[0]))
           .set("minute", Number(time.split(":")[1]))
           .set("second", 0);

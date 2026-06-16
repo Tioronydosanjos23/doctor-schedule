@@ -37,7 +37,7 @@ export default function AppointmentCalendarView({
   const appointmentsByDate = appointments.reduce(
     (acc, apt) => {
       const dateKey = dayjs(apt.date)
-        .tz("America/Sao_Paulo")
+        .tz("Africa/Luanda")
         .format("YYYY-MM-DD");
       if (!acc[dateKey]) acc[dateKey] = [];
       acc[dateKey].push(apt);
@@ -180,7 +180,7 @@ export default function AppointmentCalendarView({
                         </div>
                         <Badge variant="outline" className="shrink-0 text-xs">
                           {dayjs(apt.date)
-                            .tz("America/Sao_Paulo")
+                            .tz("Africa/Luanda")
                             .format("HH:mm")}
                         </Badge>
                       </div>
