@@ -15,6 +15,13 @@
       "when": 1761109234123,
       "tag": "0001_freezing_alex_wilder",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1781894498402,
+      "tag": "0002_colossal_rumiko_fujikawa",
+      "breakpoints": true
     }
   ]
 }

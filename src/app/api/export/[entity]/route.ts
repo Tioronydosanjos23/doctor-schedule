@@ -112,18 +112,59 @@ async function buildPatientsExcel(clinicId: string): Promise<Buffer> {
     { header: "Email", key: "email", width: 32 },
     { header: "Telefone", key: "phone", width: 18 },
     { header: "Sexo", key: "sex", width: 14 },
+    { header: "Data de Nascimento", key: "dateOfBirth", width: 18 },
+    { header: "Idade", key: "age", width: 10 },
+    { header: "Tipo Sanguíneo", key: "bloodType", width: 16 },
+    { header: "Peso (kg)", key: "weight", width: 12 },
+    { header: "Altura (cm)", key: "height", width: 12 },
+    { header: "Profissão", key: "occupation", width: 22 },
+    { header: "Endereço", key: "address", width: 30 },
+    { header: "Alergias", key: "allergies", width: 30 },
+    { header: "Condições Crônicas", key: "chronicConditions", width: 30 },
+    { header: "Medicamentos", key: "medications", width: 30 },
+    { header: "Contato Emergência", key: "emergencyContactName", width: 24 },
+    { header: "Tel. Emergência", key: "emergencyContactPhone", width: 18 },
+    { header: "Observações", key: "observations", width: 30 },
   ];
+
+  const getSexLabel = (sex: "male" | "female") =>
+    sex === "male" ? "Masculino" : "Feminino";
+
+  const calcAge = (dob: string | null) => {
+    if (!dob) return "";
+    const birth = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const mDiff = today.getMonth() - birth.getMonth();
+    if (mDiff < 0 || (mDiff === 0 && today.getDate() < birth.getDate())) age--;
+    return age;
+  };
 
   patients.forEach((p) => {
     ws.addRow({
       name: p.name,
       email: p.email,
       phone: p.phoneNumber,
-      sex: p.sex === "male" ? "Masculino" : "Feminino",
+      sex: getSexLabel(p.sex),
+      dateOfBirth: p.dateOfBirth
+        ? dayjs(p.dateOfBirth).format("DD/MM/YYYY")
+        : "",
+      age: calcAge(p.dateOfBirth),
+      bloodType: p.bloodType ?? "",
+      weight: p.weight ?? "",
+      height: p.height ?? "",
+      occupation: p.occupation ?? "",
+      address: p.address ?? "",
+      allergies: p.allergies ?? "",
+      chronicConditions: p.chronicConditions ?? "",
+      medications: p.medications ?? "",
+      emergencyContactName: p.emergencyContactName ?? "",
+      emergencyContactPhone: p.emergencyContactPhone ?? "",
+      observations: p.observations ?? "",
     });
   });
 
-  styleHeader(ws, 4);
+  styleHeader(ws, 17);
   styleDataRows(ws, patients.length);
 
   return wb.xlsx.writeBuffer() as unknown as Promise<Buffer>;
@@ -305,20 +346,42 @@ async function buildPatientsPDF(clinicId: string): Promise<Buffer> {
     where: eq(patientsTable.clinicId, clinicId),
   });
 
+  const calcAge = (dob: string | null) => {
+    if (!dob) return "";
+    const birth = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const mDiff = today.getMonth() - birth.getMonth();
+    if (mDiff < 0 || (mDiff === 0 && today.getDate() < birth.getDate())) age--;
+    return `${age} anos`;
+  };
+
   const rows = patients.map((p) => [
     p.name,
-    p.email,
     p.phoneNumber,
     p.sex === "male" ? "Masculino" : "Feminino",
+    p.dateOfBirth ? dayjs(p.dateOfBirth).format("DD/MM/YYYY") : "",
+    calcAge(p.dateOfBirth),
+    p.bloodType ?? "",
+    p.weight ? `${p.weight} kg` : "",
+    p.height ? `${p.height} cm` : "",
+    p.occupation ?? "",
+    p.allergies ?? "",
   ]);
 
   return buildPDF(
     "Pacientes",
     [
-      { label: "Nome", width: 28 },
-      { label: "Email", width: 34 },
-      { label: "Telefone", width: 20 },
-      { label: "Sexo", width: 18 },
+      { label: "Nome", width: 16 },
+      { label: "Telefone", width: 14 },
+      { label: "Sexo", width: 10 },
+      { label: "Data Nasc.", width: 12 },
+      { label: "Idade", width: 8 },
+      { label: "Tipo Sanguíneo", width: 12 },
+      { label: "Peso", width: 8 },
+      { label: "Altura", width: 8 },
+      { label: "Profissão", width: 12 },
+      { label: "Alergias", width: 20 },
     ],
     rows,
   );

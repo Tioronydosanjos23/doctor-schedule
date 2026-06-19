@@ -1,7 +1,9 @@
 import { relations } from "drizzle-orm";
 import {
   boolean,
+  date,
   integer,
+  numeric,
   pgEnum,
   pgTable,
   text,
@@ -144,6 +146,16 @@ export const doctorsTableRelations = relations(
 );
 
 export const patientSexEnum = pgEnum("patient_sex", ["male", "female"]);
+export const bloodTypeEnum = pgEnum("blood_type", [
+  "A+",
+  "A-",
+  "B+",
+  "B-",
+  "AB+",
+  "AB-",
+  "O+",
+  "O-",
+]);
 
 export const patientsTable = pgTable("patients", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -153,8 +165,24 @@ export const patientsTable = pgTable("patients", {
   name: text("name").notNull(),
   email: text("email").notNull(),
   phoneNumber: text("phone_number").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
   sex: patientSexEnum("sex").notNull(),
+  // Dados pessoais
+  dateOfBirth: date("date_of_birth"),
+  occupation: text("occupation"),
+  address: text("address"),
+  // Dados médicos
+  bloodType: bloodTypeEnum("blood_type"),
+  weight: numeric("weight", { precision: 5, scale: 1 }),
+  height: numeric("height", { precision: 5, scale: 1 }),
+  allergies: text("allergies"),
+  chronicConditions: text("chronic_conditions"),
+  medications: text("medications"),
+  // Emergência
+  emergencyContactName: text("emergency_contact_name"),
+  emergencyContactPhone: text("emergency_contact_phone"),
+  // Observações
+  observations: text("observations"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => new Date()),

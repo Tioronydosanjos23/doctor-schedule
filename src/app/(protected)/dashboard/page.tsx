@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
-import { Calendar } from "lucide-react";
+import { AlertCircle, Calendar } from "lucide-react";
 import { redirect } from "next/navigation";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
 import {
@@ -18,7 +17,9 @@ import WithAuthentication from "@/hocs/with-authentication";
 import { getSession } from "@/lib/get-session";
 
 import { appointmentsTableColumns } from "../appointments/_components/table-columns";
+import AgeDistribution from "./_components/age-distribution";
 import AppointmentsChart from "./_components/appointments-chart";
+import BloodTypeDistribution from "./_components/blood-type-distribution";
 import { DatePicker } from "./_components/date-picker";
 import StatsCards from "./_components/stats-cards";
 import TopDoctors from "./_components/top-doctors";
@@ -55,6 +56,9 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
     topSpecialties,
     todayAppointments,
     dailyAppointmentsData,
+    bloodTypeDistribution,
+    ageDistribution,
+    patientsWithAllergies,
   } = await getDashboard({
     from,
     to,
@@ -90,6 +94,19 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
             totalPatients={totalPatients.total}
             totalDoctors={totalDoctors.total}
           />
+
+          {/* Alert Card: Pacientes com Alergias */}
+          {patientsWithAllergies > 0 && (
+            <Card className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/20">
+              <CardContent className="flex items-center gap-3 py-4">
+                <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                <p className="text-sm text-amber-800 dark:text-amber-300">
+                  <strong>{patientsWithAllergies} paciente{patientsWithAllergies > 1 ? "s" : ""}</strong> com alergias registradas.
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
           <div className="grid gap-4 md:grid-cols-[2.25fr_1fr]">
             <AppointmentsChart dailyAppointmentsData={dailyAppointmentsData} />
             <TopDoctors doctors={topDoctors} />
@@ -112,6 +129,18 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
               </CardContent>
             </Card>
             <TopSpecialties topSpecialties={topSpecialties} />
+          </div>
+
+          {/* Nova linha: Distribuição por Tipo Sanguíneo + Faixa Etária */}
+          <div className="grid gap-4 md:grid-cols-2">
+            <BloodTypeDistribution
+              data={bloodTypeDistribution}
+              total={totalPatients.total}
+            />
+            <AgeDistribution
+              data={ageDistribution}
+              total={ageDistribution.reduce((acc, d) => acc + d.count, 0)}
+            />
           </div>
         </PageContent>
       </PageContainer>

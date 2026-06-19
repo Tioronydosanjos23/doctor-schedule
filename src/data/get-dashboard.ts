@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { and, count, desc, eq, gte, lte, sql, sum } from "drizzle-orm";
+import { and, count, desc, eq, gte, isNotNull, lte, sql, sum } from "drizzle-orm";
 
 import { db } from "@/db";
 import { appointmentsTable, doctorsTable, patientsTable } from "@/db/schema";
@@ -33,6 +33,9 @@ export const getDashboard = async ({ from, to, session }: Params) => {
     topSpecialties,
     todayAppointments,
     dailyAppointmentsData,
+    bloodTypeDistribution,
+    ageDistribution,
+    [patientsWithAllergies],
   ] = await Promise.all([
     db
       .select({
@@ -143,6 +146,55 @@ export const getDashboard = async ({ from, to, session }: Params) => {
       )
       .groupBy(sql`DATE(${appointmentsTable.date})`)
       .orderBy(sql`DATE(${appointmentsTable.date})`),
+    // Blood type distribution
+    db
+      .select({
+        bloodType: patientsTable.bloodType,
+        count: count(),
+      })
+      .from(patientsTable)
+      .where(
+        and(
+          eq(patientsTable.clinicId, session.user.clinic.id),
+          isNotNull(patientsTable.bloodType),
+        ),
+      )
+      .groupBy(patientsTable.bloodType)
+      .orderBy(desc(count())),
+    // Age distribution
+    db
+      .select({
+        range: sql<string>`CASE
+          WHEN EXTRACT(YEAR FROM AGE(${patientsTable.dateOfBirth})) < 18 THEN '0-17'
+          WHEN EXTRACT(YEAR FROM AGE(${patientsTable.dateOfBirth})) BETWEEN 18 AND 30 THEN '18-30'
+          WHEN EXTRACT(YEAR FROM AGE(${patientsTable.dateOfBirth})) BETWEEN 31 AND 45 THEN '31-45'
+          WHEN EXTRACT(YEAR FROM AGE(${patientsTable.dateOfBirth})) BETWEEN 46 AND 60 THEN '46-60'
+          ELSE '60+'
+        END`.as("range"),
+        count: count(),
+      })
+      .from(patientsTable)
+      .where(
+        and(
+          eq(patientsTable.clinicId, session.user.clinic.id),
+          isNotNull(patientsTable.dateOfBirth),
+        ),
+      )
+      .groupBy(sql`1`)
+      .orderBy(sql`1`),
+    // Patients with allergies count
+    db
+      .select({
+        total: count(),
+      })
+      .from(patientsTable)
+      .where(
+        and(
+          eq(patientsTable.clinicId, session.user.clinic.id),
+          isNotNull(patientsTable.allergies),
+          sql`TRIM(${patientsTable.allergies}) != ''`,
+        ),
+      ),
   ]);
   return {
     totalRevenue,
@@ -153,5 +205,8 @@ export const getDashboard = async ({ from, to, session }: Params) => {
     topSpecialties,
     todayAppointments,
     dailyAppointmentsData,
+    bloodTypeDistribution,
+    ageDistribution,
+    patientsWithAllergies: patientsWithAllergies?.total ?? 0,
   };
 };
